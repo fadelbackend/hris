@@ -22,11 +22,12 @@ class CompanyController extends Controller
         $companyQuery = Company::with(['users'])->whereHas('users', function ($query) {
             $query->where('user_id', Auth::id());
         });
+        $withTeam = $request->input('withTeam', false);
 
         //menampilkan 1
         if ($id) {
             //cuman bisa mengambil data yg dimiliki mengunakan relasi
-            $company = $companyQuery->find($id);
+            $company = $companyQuery->with('teams')->find($id);
 
             if ($company) {
                 return ResponseFormatter::success($company, 'Company Found');
@@ -41,6 +42,10 @@ class CompanyController extends Controller
         if ($name) {
             $companies->where('name', 'like', '%' . $name . '%');
         }
+
+        // if ($withTeam) {
+        //     $companies->with('teams');
+        // }
 
         return ResponseFormatter::success(
             $companies->paginate($limit),

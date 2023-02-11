@@ -19,4 +19,5 @@ class Responsibility extends Model
     {
         return $this->belongsTo(Role::class);
     }
+
 }

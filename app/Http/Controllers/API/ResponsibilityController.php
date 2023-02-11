@@ -57,10 +57,10 @@ class ResponsibilityController extends Controller
             ]);
 
             if (!$respon) {
-                throw new Exception('Responsibility not create');
+                throw new Exception('Responsibility not created');
             }
 
-            return ResponseFormatter::success($respon, 'Responsibility Create');
+            return ResponseFormatter::success($respon, 'Responsibility Created');
 
         } catch (Exception $error) {
             return ResponseFormatter::error($error->getMessage(), 500);

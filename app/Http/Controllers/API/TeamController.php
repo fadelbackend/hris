@@ -19,11 +19,12 @@ class TeamController extends Controller
         $name = $request->input('name');
         $limit = $request->input('limit', 10);
         $teamQuery = Team::query();
+        $withEmployess = $request->input('withEmployess', false);
 
         //menampilkan 1
         if ($id) {
             //cuman bisa mengambil data yg dimiliki mengunakan relasi
-            $team = $teamQuery->find($id);
+            $team = $teamQuery->with('employees')->find($id);
 
             if ($team) {
                 return ResponseFormatter::success($team, 'Team Found');
@@ -37,6 +38,10 @@ class TeamController extends Controller
 
         if ($name) {
             $teams->where('name', 'like', '%' . $name . '%');
+        }
+
+        if ($withEmployess) {
+            $teams->with('employees');
         }
 
         return ResponseFormatter::success(
