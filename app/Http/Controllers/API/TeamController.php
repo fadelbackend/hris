@@ -18,7 +18,7 @@ class TeamController extends Controller
         $id = $request->input('id');
         $name = $request->input('name');
         $limit = $request->input('limit', 10);
-        $teamQuery = Team::query();
+        $teamQuery = Team::withCount('employees');
         $withEmployess = $request->input('withEmployess', false);
 
         //menampilkan 1
@@ -62,7 +62,7 @@ class TeamController extends Controller
             //create company
             $team = Team::create([
                 'name' => $request->name,
-                'icon' => $path,
+                'icon' => isset($path) ? $path : '',
                 'company_id' => $request->company_id,
             ]);
 
